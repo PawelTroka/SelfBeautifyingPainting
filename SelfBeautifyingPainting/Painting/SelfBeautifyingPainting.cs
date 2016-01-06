@@ -41,16 +41,16 @@ namespace SelfBeautifyingPainting.Painting
 
         private PaintingFragment CoordsToPaintingFragment(int x, int y)
         {
-            if( x < width/2 && y<height/2)
+            if( x <= width/2 && y<=height/2)
                 return PaintingFragment.LeftTop;
 
             if (x > width / 2 && y > height / 2)
                 return PaintingFragment.RightBottom;
 
-            if (x > width / 2 && y < height / 2)
+            if (x > width / 2 && y <= height / 2)
                 return PaintingFragment.RightTop;
 
-            if (x < width / 2 && y > height / 2)
+            if (x <= width / 2 && y > height / 2)
                 return PaintingFragment.LeftBottom;
 
             return PaintingFragment.LeftTop;
@@ -125,6 +125,7 @@ namespace SelfBeautifyingPainting.Painting
                             case PaintingMode.GoogleImagesRelated:
                             case PaintingMode.GoogleTopicsImages:
 
+                                //if(x - coordsOffset.X < images[pf].Width &&  y - coordsOffset.Y< images[pf].Height)
                                 Painting.SetPixel(x, y, images[pf].GetPixel(x - coordsOffset.X, y - coordsOffset.Y));
                                 break;
                             case PaintingMode.Colors:
@@ -142,9 +143,28 @@ namespace SelfBeautifyingPainting.Painting
                         }
                     }
                 }
+            SmoothEdges();
             fragmentsToUpdate.Clear();
             fragmentHated = null;
             fragmentLiked = null;
+        }
+
+        private void SmoothEdges()
+        {
+
+            var d = 5;
+            //Apply your Gaussian blur method to the image
+
+            //(for example, with AForge.NET, you might use the following code:)
+            GaussianBlur filter = new GaussianBlur(15, 15);
+
+
+            filter.ApplyInPlace(Painting,new Rectangle(0,height/2-d,width,2*d));
+
+            filter.ApplyInPlace(Painting, new Rectangle(width/2-d, 0, 2*d, height));
+
+            //                filter.ApplyInPlace(Painting);
+
         }
 
         public void ReviewPainting(int x, int y, bool likedIt)

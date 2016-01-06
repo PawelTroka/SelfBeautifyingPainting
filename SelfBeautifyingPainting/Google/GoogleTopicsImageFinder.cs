@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define _USE_GOOGLE_API
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -7,17 +8,29 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Google;
+using Google.Apis.Customsearch.v1;
+using Google.Apis.Customsearch.v1.Data;
+using Google.Apis.Requests;
+using Google.Apis.Services;
+using Google.Apis.Util;
 
 namespace SelfBeautifyingPainting.Google
 {
     class GoogleTopicsImageFinder
     {
+        private string api_key = "AIzaSyDoxeH06S1fMBmbY3pEEOJGfTZBzA2bbik";
+
+        private string cx = "006390233743907945299:psnsr5yd-ys";
+           
+        private RequestBuilder requestBuilder;
         private int width, height;
 
         public GoogleTopicsImageFinder(int w, int h)
         {
             width = w;
             height = h;
+            requestBuilder = new RequestBuilder();
         }
 
         private Random rnd = new Random();
@@ -62,30 +75,60 @@ namespace SelfBeautifyingPainting.Google
             return null;
         }
 
-        private List<string> GetUrls(string html)
+        private IEnumerable<string> GetUrls(string topicOrHtml)
         {
-            var urls = new List<string>();
-            int ndx = html.IndexOf("class=\"images_table\"", StringComparison.Ordinal);
-            ndx = html.IndexOf("<img", ndx, StringComparison.Ordinal);
+#if _USE_GOOGLE_API
+            var cs = new CustomsearchService(new BaseClientService.Initializer() {ApiKey = api_key, ApplicationName = "SelfBeautifyingPainting" });
+            
 
-            while (ndx >= 0)
+            var listRequest = cs.Cse.List(topicOrHtml);
+            listRequest.Cx = cx;
+            //listRequest.SearchType = CseResource.ListRequest.SearchTypeEnum.Image;
+            //listRequest.ExactTerms = topic;
+            listRequest.Key = api_key;
+            listRequest.Googlehost = "https://www.google.com";
+            listRequest.ImgColorType=CseResource.ListRequest.ImgColorTypeEnum.Color;
+            listRequest.FileType = "jpg";
+
+            var search = listRequest.Execute();
+           
+            foreach (var result in search.Items)
             {
-                ndx = html.IndexOf("src=\"", ndx, StringComparison.Ordinal);
-                ndx = ndx + 5;
-                int ndx2 = html.IndexOf("\"", ndx, StringComparison.Ordinal);
-                string url = html.Substring(ndx, ndx2 - ndx);
-                urls.Add(url);
-                ndx = html.IndexOf("<img", ndx, StringComparison.Ordinal);
+                yield return result.Image.ContextLink;
             }
-            return urls;
+
+
+#else
+             var urls = new List<string>();
+             int ndx = topicOrHtml.IndexOf("class=\"images_table\"", StringComparison.Ordinal);
+             ndx = topicOrHtml.IndexOf("<img", ndx, StringComparison.Ordinal);
+
+             while (ndx >= 0)
+             {
+                 ndx = topicOrHtml.IndexOf("src=\"", ndx, StringComparison.Ordinal);
+                 ndx = ndx + 5;
+                 int ndx2 = topicOrHtml.IndexOf("\"", ndx, StringComparison.Ordinal);
+                 string url = topicOrHtml.Substring(ndx, ndx2 - ndx);
+                 urls.Add(url);
+                 ndx = topicOrHtml.IndexOf("<img", ndx, StringComparison.Ordinal);
+             }
+             return urls;
+#endif
         }
+
+
+
 
         public Bitmap GetPicture(string topic)
         {
-            string html = GetHtmlCode(topic);
-            List<string> urls = GetUrls(html);
+#if _USE_GOOGLE_API
+            string topicOrHtml =topic;
+#else
+            string topicOrHtml = GetHtmlCode(topic);
+#endif
+            List<string> urls = new List<string>(GetUrls(topicOrHtml));;
 
-            int randomUrl = rnd.Next(0, urls.Count - 1);
+            int randomUrl = rnd.Next(0, urls.Count);
 
             string luckyUrl = urls[randomUrl];
 
@@ -94,9 +137,9 @@ namespace SelfBeautifyingPainting.Google
             using (var ms = new MemoryStream(image))
             {
                 var img = Image.FromStream(ms);
-                return new Bitmap(img,width,height);
+                return new Bitmap(img, width, height);
+                //return new Bitmap(img,img.Width,img.Height);
             }
-
         }
     }
 }
