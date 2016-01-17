@@ -1,7 +1,6 @@
 ﻿namespace SelfBeautifyingPainting.Google
 {
-    class GoogleRelatedImageFinder
+    internal class GoogleRelatedImageFinder
     {
- 
     }
 }

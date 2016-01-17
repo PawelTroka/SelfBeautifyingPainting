@@ -6,7 +6,10 @@ namespace SelfBeautifyingPainting.Helpers
 {
     public static class EnglishWordsDictionary
     {
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
+
+        private static List<string> dictionary;
+
         public static List<string> Dictionary
         {
             get
@@ -22,8 +25,6 @@ namespace SelfBeautifyingPainting.Helpers
         {
             return Dictionary[random.Next(0, Dictionary.Count)];
         }
-
-        private static List<string> dictionary;
 
         private static void InitDictionary()
         {

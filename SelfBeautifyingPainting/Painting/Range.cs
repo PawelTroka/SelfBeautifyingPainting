@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace SelfBeautifyingPainting.Painting
+﻿namespace SelfBeautifyingPainting.Painting
 {
-    struct Range
+    internal struct Range
     {
         public Range(byte min, byte max)
         {

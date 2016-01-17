@@ -2,7 +2,7 @@
 {
     public enum PaintingFragment
     {
-      //  Center,
+        //  Center,
         LeftTop,
         RightTop,
         LeftBottom,

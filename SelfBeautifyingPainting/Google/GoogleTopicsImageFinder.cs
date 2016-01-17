@@ -1,30 +1,25 @@
 ﻿//#define _USE_GOOGLE_API
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Google;
-using Google.Apis.Customsearch.v1;
-using Google.Apis.Customsearch.v1.Data;
 using Google.Apis.Requests;
-using Google.Apis.Services;
-using Google.Apis.Util;
 
 namespace SelfBeautifyingPainting.Google
 {
-    class GoogleTopicsImageFinder
+    internal class GoogleTopicsImageFinder
     {
         private string api_key = "AIzaSyDoxeH06S1fMBmbY3pEEOJGfTZBzA2bbik";
 
         private string cx = "006390233743907945299:psnsr5yd-ys";
-           
+
         private RequestBuilder requestBuilder;
-        private int width, height;
+
+        private readonly Random rnd = new Random();
+        private readonly int width;
+        private readonly int height;
 
         public GoogleTopicsImageFinder(int w, int h)
         {
@@ -33,17 +28,15 @@ namespace SelfBeautifyingPainting.Google
             requestBuilder = new RequestBuilder();
         }
 
-        private Random rnd = new Random();
-
         private string GetHtmlCode(string topic)
         {
-            string url = "https://www.google.com/search?q=" + topic + "&tbm=isch";
-            string data = "";
+            var url = "https://www.google.com/search?q=" + topic + "&tbm=isch";
+            var data = "";
 
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            var response = (HttpWebResponse)request.GetResponse();
+            var request = (HttpWebRequest) WebRequest.Create(url);
+            var response = (HttpWebResponse) request.GetResponse();
 
-            using (Stream dataStream = response.GetResponseStream())
+            using (var dataStream = response.GetResponseStream())
             {
                 if (dataStream == null)
                     return "";
@@ -57,16 +50,16 @@ namespace SelfBeautifyingPainting.Google
 
         private byte[] GetImage(string url)
         {
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            var response = (HttpWebResponse)request.GetResponse();
+            var request = (HttpWebRequest) WebRequest.Create(url);
+            var response = (HttpWebResponse) request.GetResponse();
 
-            using (Stream dataStream = response.GetResponseStream())
+            using (var dataStream = response.GetResponseStream())
             {
                 if (dataStream == null)
                     return null;
                 using (var sr = new BinaryReader(dataStream))
                 {
-                    byte[] bytes = sr.ReadBytes(100000);
+                    var bytes = sr.ReadBytes(100000);
 
                     return bytes;
                 }
@@ -99,24 +92,22 @@ namespace SelfBeautifyingPainting.Google
 
 
 #else
-             var urls = new List<string>();
-             int ndx = topicOrHtml.IndexOf("class=\"images_table\"", StringComparison.Ordinal);
-             ndx = topicOrHtml.IndexOf("<img", ndx, StringComparison.Ordinal);
+            var urls = new List<string>();
+            var ndx = topicOrHtml.IndexOf("class=\"images_table\"", StringComparison.Ordinal);
+            ndx = topicOrHtml.IndexOf("<img", ndx, StringComparison.Ordinal);
 
-             while (ndx >= 0)
-             {
-                 ndx = topicOrHtml.IndexOf("src=\"", ndx, StringComparison.Ordinal);
-                 ndx = ndx + 5;
-                 int ndx2 = topicOrHtml.IndexOf("\"", ndx, StringComparison.Ordinal);
-                 string url = topicOrHtml.Substring(ndx, ndx2 - ndx);
-                 urls.Add(url);
-                 ndx = topicOrHtml.IndexOf("<img", ndx, StringComparison.Ordinal);
-             }
-             return urls;
+            while (ndx >= 0)
+            {
+                ndx = topicOrHtml.IndexOf("src=\"", ndx, StringComparison.Ordinal);
+                ndx = ndx + 5;
+                var ndx2 = topicOrHtml.IndexOf("\"", ndx, StringComparison.Ordinal);
+                var url = topicOrHtml.Substring(ndx, ndx2 - ndx);
+                urls.Add(url);
+                ndx = topicOrHtml.IndexOf("<img", ndx, StringComparison.Ordinal);
+            }
+            return urls;
 #endif
         }
-
-
 
 
         public Bitmap GetPicture(string topic)
@@ -124,15 +115,16 @@ namespace SelfBeautifyingPainting.Google
 #if _USE_GOOGLE_API
             string topicOrHtml =topic;
 #else
-            string topicOrHtml = GetHtmlCode(topic);
+            var topicOrHtml = GetHtmlCode(topic);
 #endif
-            List<string> urls = new List<string>(GetUrls(topicOrHtml));;
+            var urls = new List<string>(GetUrls(topicOrHtml));
+            ;
 
-            int randomUrl = rnd.Next(0, urls.Count);
+            var randomUrl = rnd.Next(0, urls.Count);
 
-            string luckyUrl = urls[randomUrl];
+            var luckyUrl = urls[randomUrl];
 
-            byte[] image = GetImage(luckyUrl);
+            var image = GetImage(luckyUrl);
 
             using (var ms = new MemoryStream(image))
             {
