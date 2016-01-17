@@ -143,12 +143,18 @@
     <Compile Include="Helpers\EnglishWordsDictionary.cs" />
     <Compile Include="Google\GoogleTopicsImageFinder.cs" />
     <Compile Include="Helpers\RandomProvider.cs" />
-    <Compile Include="Painting\ColorProbabilityPair.cs" />
-    <Compile Include="Painting\SelfBeautifyingPaintings\ColorsMarkovModelSelfBeautifyingPainting.cs" />
-    <Compile Include="Painting\SelfBeautifyingPaintings\ColorsWithProbabilitySelfBeautifyingPainting.cs" />
-    <Compile Include="Painting\Coords.cs" />
-    <Compile Include="Painting\MarkovProcess.cs" />
+    <Compile Include="Helpers\ValueProbabilityPair.cs" />
+    <Compile Include="Painting\SelfBeautifyingPaintings\ColorProbabilityMode\ColorProbabilityPair.cs" />
+    <Compile Include="Painting\SelfBeautifyingPaintings\ColorsMarkovMode\ColorsMarkovModelSelfBeautifyingPainting.cs" />
+    <Compile Include="Painting\SelfBeautifyingPaintings\ColorProbabilityMode\ColorsWithProbabilitySelfBeautifyingPainting.cs" />
+    <Compile Include="Helpers\Coords.cs" />
+    <Compile Include="Painting\SelfBeautifyingPaintings\ColorsMarkovMode\MarkovProcess.cs" />
+    <Compile Include="Helpers\CoordsRange.cs" />
     <Compile Include="Painting\SelfBeautifyingPaintings\SelfBeautifyingPainting.cs" />
+    <Compile Include="Helpers\ValueProbabilityPairGeneration.cs" />
+    <Compile Include="Painting\SelfBeautifyingPaintings\ShapeMode\Shape.cs" />
+    <Compile Include="Painting\SelfBeautifyingPaintings\ShapeMode\ShapeDrawer.cs" />
+    <Compile Include="Painting\SelfBeautifyingPaintings\ShapeMode\ShapeSelfBeautifyingPainting.cs" />
     <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,7 +165,7 @@
     <Compile Include="Painting\PaintingMode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Painting\Range.cs" />
+    <Compile Include="Helpers\Range.cs" />
     <Compile Include="Painting\SelfBeautifyingPaintings\GoogleTopicsSelfBeautifyingPainting.cs" />
     <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

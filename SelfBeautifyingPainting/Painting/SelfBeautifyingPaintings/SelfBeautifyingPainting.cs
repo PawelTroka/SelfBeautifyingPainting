@@ -4,20 +4,20 @@ using System.Drawing;
 using AForge.Imaging.Filters;
 using SelfBeautifyingPainting.Helpers;
 
-namespace SelfBeautifyingPainting.Painting
+namespace SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings
 {
     internal abstract class SelfBeautifyingPainting
     {
-        protected PaintingFragment? fragmentHated;
-        protected PaintingFragment? fragmentLiked;
-        private readonly List<PaintingFragment> fragmentsToUpdate;
+        protected readonly List<PaintingFragment> fragmentsToUpdate;
         private readonly int height = 1080;
         private readonly KnownColor[] knownColors = (KnownColor[]) Enum.GetValues(typeof (KnownColor));
+        private readonly int width = 1920;
+        protected PaintingFragment? fragmentHated;
+        protected PaintingFragment? fragmentLiked;
 
         protected bool smoothingEnabled = true;
         //protected readonly Random random = new Random();
         protected Func<PaintingFragment, int, int, Color> updateFunction;
-        private readonly int width = 1920;
 
         protected SelfBeautifyingPainting(int w, int h)
         {
@@ -50,7 +50,7 @@ namespace SelfBeautifyingPainting.Painting
         // public PaintingMode Mode { get; set; }
         public Bitmap Painting { get; }
 
-        private PaintingFragment CoordsToPaintingFragment(int x, int y)
+        protected PaintingFragment CoordsToPaintingFragment(int x, int y)
         {
             if (x <= width/2 && y <= height/2)
                 return PaintingFragment.LeftTop;
@@ -84,18 +84,61 @@ namespace SelfBeautifyingPainting.Painting
             }
         }
 
+        public void RepaintAll()
+        {
+            fragmentHated = fragmentLiked = null;
+            foreach (PaintingFragment value in Enum.GetValues(typeof (PaintingFragment)))
+                clearFragment(value);
+            UpdatePainting();
+        }
+
+        protected CoordsRange PaintingFragmentToRange(PaintingFragment pf)
+        {
+            switch (pf)
+            {
+                case PaintingFragment.LeftTop:
+                    return new CoordsRange(new Coords(0, 0), new Coords(width/2, height/2));
+                case PaintingFragment.RightTop:
+                    return new CoordsRange(new Coords(width/2, 0), new Coords(width, height/2));
+                case PaintingFragment.LeftBottom:
+                    return new CoordsRange(new Coords(0, height/2), new Coords(width/2, height));
+                case PaintingFragment.RightBottom:
+                    return new CoordsRange(new Coords(width/2, height/2), new Coords(width, height));
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(pf), pf, null);
+            }
+        }
+
+        protected void clearFragment(PaintingFragment pf)
+        {
+            for (var x = 0; x < width; x++)
+                for (var y = 0; y < height; y++)
+                {
+                    if (CoordsToPaintingFragment(x, y) == pf)
+                    {
+                        Painting.SetPixel(x, y, Color.White);
+                    }
+                }
+        }
+
         public event EventHandler ImageChanged;
 
-        protected void UpdatePainting()
+
+        protected bool DoesPaintingFragmentNeedRepaint(PaintingFragment pf)
+        {
+            return (!fragmentLiked.HasValue && !fragmentHated.HasValue) ||
+                   (fragmentLiked.HasValue && pf != fragmentLiked.Value) ||
+                   (fragmentHated.HasValue && pf == fragmentHated.Value);
+        }
+
+        protected virtual void UpdatePainting()
         {
             for (var x = 0; x < width; x++)
                 for (var y = 0; y < height; y++)
                 {
                     var pf = CoordsToPaintingFragment(x, y);
 
-                    if ((!fragmentLiked.HasValue && !fragmentHated.HasValue) ||
-                        (fragmentLiked.HasValue && pf != fragmentLiked.Value) ||
-                        (fragmentHated.HasValue && pf == fragmentHated.Value))
+                    if (DoesPaintingFragmentNeedRepaint(pf))
                     {
                         var coordsOffset = PaintingFragmentToCoordsOffset(pf);
 

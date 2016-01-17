@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace SelfBeautifyingPainting.Painting
+namespace SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ColorProbabilityMode
 {
     public struct ColorProbabilityPair
     {

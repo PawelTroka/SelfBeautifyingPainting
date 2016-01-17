@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ColorProbabilityMode;
 
-namespace SelfBeautifyingPainting.Painting
+namespace SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ColorsMarkovMode
 {
     public struct MarkovProcess
     {

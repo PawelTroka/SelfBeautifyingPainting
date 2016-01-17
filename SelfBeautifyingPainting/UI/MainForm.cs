@@ -3,12 +3,16 @@ using System.Linq;
 using System.Windows.Forms;
 using AForge.Video.DirectShow;
 using SelfBeautifyingPainting.Painting;
+using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings;
+using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ColorProbabilityMode;
+using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ColorsMarkovMode;
+using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ShapeMode;
 
 namespace SelfBeautifyingPainting.UI
 {
     public partial class MainForm : Form
     {
-        private Painting.SelfBeautifyingPainting _selfBeautifyingPainting;
+        private Painting.SelfBeautifyingPaintings.SelfBeautifyingPainting _selfBeautifyingPainting;
         private PaintingMode mode;
 
         public MainForm()
@@ -22,7 +26,7 @@ namespace SelfBeautifyingPainting.UI
 
         private void InitModes()
         {
-            mode = PaintingMode.ColorsWithMarkovModel;
+            mode = PaintingMode.ColorsWithProbability;
 
             toolStripComboBox1.Items.AddRange(Enum.GetValues(typeof (PaintingMode)).Cast<object>().ToArray());
             toolStripComboBox1.SelectedItem = mode;
@@ -46,8 +50,14 @@ namespace SelfBeautifyingPainting.UI
                     _selfBeautifyingPainting = new ColorsMarkovModelSelfBeautifyingPainting(workingArea.Width,
                         workingArea.Height);
                     break;
+                case PaintingMode.Shapes:
+                    _selfBeautifyingPainting = new ShapeSelfBeautifyingPainting(workingArea.Width,
+                        workingArea.Height);
+                    break;
+
                 case PaintingMode.Colors:
                 case PaintingMode.GoogleImagesRelated:
+
 
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -113,7 +123,7 @@ namespace SelfBeautifyingPainting.UI
             var coordinates = me.Location;
 
             _selfBeautifyingPainting.ReviewPainting(coordinates.X, coordinates.Y, me.Button == MouseButtons.Left);
-                //left button means we liked it
+            //left button means we liked it
         }
 
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)

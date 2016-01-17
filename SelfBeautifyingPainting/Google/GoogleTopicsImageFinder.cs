@@ -11,15 +11,15 @@ namespace SelfBeautifyingPainting.Google
 {
     internal class GoogleTopicsImageFinder
     {
+        private readonly int height;
+
+        private readonly Random rnd = new Random();
+        private readonly int width;
         private string api_key = "AIzaSyDoxeH06S1fMBmbY3pEEOJGfTZBzA2bbik";
 
         private string cx = "006390233743907945299:psnsr5yd-ys";
 
         private RequestBuilder requestBuilder;
-
-        private readonly Random rnd = new Random();
-        private readonly int width;
-        private readonly int height;
 
         public GoogleTopicsImageFinder(int w, int h)
         {

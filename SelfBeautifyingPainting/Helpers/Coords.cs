@@ -1,4 +1,4 @@
-namespace SelfBeautifyingPainting.Painting
+namespace SelfBeautifyingPainting.Helpers
 {
     public struct Coords
     {

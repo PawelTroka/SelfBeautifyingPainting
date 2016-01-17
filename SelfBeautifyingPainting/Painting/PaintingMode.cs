@@ -8,6 +8,7 @@
         //In this mode we will be changing the images as in the above but using general topics phrases in searching like dogs, animals, computers
         Colors, //Abstract art mode
         ColorsWithProbability,
-        ColorsWithMarkovModel
+        ColorsWithMarkovModel,
+        Shapes
     }
 }

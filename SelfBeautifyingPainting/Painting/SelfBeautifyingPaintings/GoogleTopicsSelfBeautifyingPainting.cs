@@ -4,7 +4,7 @@ using System.Drawing;
 using SelfBeautifyingPainting.Google;
 using SelfBeautifyingPainting.Helpers;
 
-namespace SelfBeautifyingPainting.Painting
+namespace SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings
 {
     internal class GoogleTopicsSelfBeautifyingPainting : SelfBeautifyingPainting
     {
@@ -47,39 +47,11 @@ namespace SelfBeautifyingPainting.Painting
 
         protected override void ChangHatedFragment()
         {
-            //  if (Mode == PaintingMode.GoogleTopicsImages)
+            if (fragmentHated != null)
             {
-                if (fragmentHated != null)
-                {
-                    topics[fragmentHated.Value] = EnglishWordsDictionary.GetRandomWord();
-                    images[fragmentHated.Value] = googleTopicsImageFinder.GetPicture(topics[fragmentHated.Value]);
-                }
-            }
-            //else if (Mode == PaintingMode.GoogleImagesRelated)
-            {
-                //  images[fragmentHated.Value] = googleTopicsImageFinder.GetPicture(EnglishWordsDictionary.GetRandomWord());
+                topics[fragmentHated.Value] = EnglishWordsDictionary.GetRandomWord();
+                images[fragmentHated.Value] = googleTopicsImageFinder.GetPicture(topics[fragmentHated.Value]);
             }
         }
-
-
-        /* public int Height
-        {
-            get { return height; }
-            set
-            {
-                height = value;
-                UpdatePainting();
-            }
-        }
-
-        public int Width
-        {
-            get { return width; }
-            set
-            {
-                width = value;
-                UpdatePainting();
-            }
-        }*/
     }
 }

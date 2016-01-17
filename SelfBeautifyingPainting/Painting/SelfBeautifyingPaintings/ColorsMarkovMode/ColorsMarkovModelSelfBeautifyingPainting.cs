@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using SelfBeautifyingPainting.Helpers;
+using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ColorProbabilityMode;
 
-namespace SelfBeautifyingPainting.Painting
+namespace SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ColorsMarkovMode
 {
     internal class ColorsMarkovModelSelfBeautifyingPainting : SelfBeautifyingPainting
     {
@@ -21,7 +22,7 @@ namespace SelfBeautifyingPainting.Painting
             {
                 colorsWithMarkovModel[(PaintingFragment) value] = new MarkovProcess
                 {
-                    InitialCDFs = ColorsWithProbabilitySelfBeautifyingPainting.GenerateColorCDFPairs(),
+                    InitialCDFs = ValueProbabilityPairGeneration.GenerateColorCDFPairs(),
                     ProbabilityOfRemainingTheSame = RandomProvider.RandomGenerator.NextDouble()
                 };
             }
@@ -38,7 +39,7 @@ namespace SelfBeautifyingPainting.Painting
                         _colors[
                             x - RandomProvider.RandomGenerator.Next(0, 2), y - RandomProvider.RandomGenerator.Next(0, 2)
                             ];
-                        //getDominantColor(_colors[x - 1, y], _colors[x, y - 1]);//_colors[x - RandomProvider.RandomGenerator.Next(0,2), y - RandomProvider.RandomGenerator.Next(0, 2)];
+                    //getDominantColor(_colors[x - 1, y], _colors[x, y - 1]);//_colors[x - RandomProvider.RandomGenerator.Next(0,2), y - RandomProvider.RandomGenerator.Next(0, 2)];
                     // return _colors[x, y];
                 }
                 else if (x > 0 && y == 0 && randomValue < colorsWithMarkovModel[fragment].ProbabilityOfRemainingTheSame)
@@ -145,7 +146,7 @@ namespace SelfBeautifyingPainting.Painting
                 {
                     colorsWithMarkovModel[fragmentHated.Value] = new MarkovProcess
                     {
-                        InitialCDFs = ColorsWithProbabilitySelfBeautifyingPainting.GenerateColorCDFPairs(),
+                        InitialCDFs = ValueProbabilityPairGeneration.GenerateColorCDFPairs(),
                         ProbabilityOfRemainingTheSame = RandomProvider.RandomGenerator.NextDouble()
                     };
                 }
