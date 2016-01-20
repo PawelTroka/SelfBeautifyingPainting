@@ -42,6 +42,7 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
+            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.tabControl1.SuspendLayout();
             this.paintingTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -84,6 +85,7 @@
             // 
             // cameraTabPage
             // 
+            this.cameraTabPage.Controls.Add(this.elementHost1);
             this.cameraTabPage.Controls.Add(this.videoSourcePlayer1);
             this.cameraTabPage.Location = new System.Drawing.Point(4, 22);
             this.cameraTabPage.Name = "cameraTabPage";
@@ -176,6 +178,16 @@
             this.toolStripComboBox1.Size = new System.Drawing.Size(121, 23);
             this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_SelectedIndexChanged);
             // 
+            // elementHost1
+            // 
+            this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.elementHost1.Location = new System.Drawing.Point(3, 3);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(270, 205);
+            this.elementHost1.TabIndex = 1;
+            this.elementHost1.Text = "elementHost1";
+            this.elementHost1.Child = null;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -215,6 +227,7 @@
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modeToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
+        private System.Windows.Forms.Integration.ElementHost elementHost1;
     }
 }
 

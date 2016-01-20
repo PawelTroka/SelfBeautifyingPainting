@@ -8,6 +8,7 @@ namespace SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings
 {
     internal abstract class SelfBeautifyingPainting
     {
+
         protected readonly List<PaintingFragment> fragmentsToUpdate;
         private readonly int height = 1080;
         private readonly KnownColor[] knownColors = (KnownColor[]) Enum.GetValues(typeof (KnownColor));

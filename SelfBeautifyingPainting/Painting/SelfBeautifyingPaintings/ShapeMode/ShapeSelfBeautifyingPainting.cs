@@ -36,6 +36,7 @@ namespace SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ShapeMode
             fragmentsToUpdate.Clear();
             fragmentHated = null;
             fragmentLiked = null;
+            
         }
 
         protected override void ChangeNotLikedFragmentToLiked(PaintingFragment fragment)
