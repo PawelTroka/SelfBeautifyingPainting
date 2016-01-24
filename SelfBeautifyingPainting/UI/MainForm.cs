@@ -34,6 +34,10 @@
 
         private readonly DispatcherTimer ReviewPaintTimer = new DispatcherTimer();
 
+        private readonly object likePercentTresholdLock = new object();
+
+        private int likePercentTreshold = 50;
+
         private int paintingPartNumber = 0;
 
         private long counter=0;
@@ -45,17 +49,35 @@
             this.InitTimers();
             this.InitButtons();
 
-
             //InitFullscreen();
 
             InitPainting();
             smileDetectionControl = new SmileDetectionControl();
             elementHost1.Child = smileDetectionControl;
             this.trackBar1.Value = 50;
-
         }
 
-        
+        /// <summary>
+        /// Gets or sets the like percent treshold.
+        /// </summary>
+        public int LikePercentTreshold
+        {
+            get
+            {
+                lock (this.likePercentTresholdLock)
+                {
+                    return this.likePercentTreshold;
+                }
+            }
+
+            set
+            {
+                lock (this.likePercentTresholdLock)
+                {
+                    this.likePercentTreshold = value;
+                }
+            }
+        }
 
         private void InitModes()
         {
@@ -266,6 +288,7 @@
         private void StopPaint(object sender, EventArgs e)
         {
             this.ProcessFrameTimer.Stop();
+            this.ReviewPaintTimer.Start();
         }
 
         /// <summary>
@@ -306,12 +329,14 @@
             var percent = this.smileDetectionControl.GetLikeResult();
             this.smileDetectionControl.ClearReviewResults();
 
-            if (percent * 100 > 50)
+            if (percent * 100 > this.LikePercentTreshold)
             {
-                this._selfBeautifyingPainting.ReviewPainting((PaintingFragment)this.paintingPartNumber, false);
+                this.label4.Text = $"You liked picure in {this.paintingPartNumber + 1} area";
+                this._selfBeautifyingPainting.ReviewPainting((PaintingFragment)this.paintingPartNumber, true);
             }
             else
             {
+                this.label4.Text = $"You did not liked picure in {this.paintingPartNumber + 1} area";
                 this._selfBeautifyingPainting.ReviewPainting((PaintingFragment)this.paintingPartNumber, false);
             }
 
@@ -340,6 +365,20 @@
 
             this.ProcessFrameTimer.Start();
             this.ReviewPaintTimer.Start();
+        }
+
+        /// <summary>
+        /// The update like percent treshold.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void UpdateLikePercentTreshold(object sender, EventArgs e)
+        {
+            this.LikePercentTreshold = this.trackBar2.Value;
         }
     }
 }

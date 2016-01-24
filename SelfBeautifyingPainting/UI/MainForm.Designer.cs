@@ -44,22 +44,27 @@
             this.modeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.trackBar2 = new System.Windows.Forms.TrackBar();
+            this.topRightButton = new System.Windows.Forms.Button();
+            this.bottomRightButton = new System.Windows.Forms.Button();
+            this.bottomLeftButton = new System.Windows.Forms.Button();
+            this.topLeftButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.button1 = new System.Windows.Forms.Button();
             this.noSmileButton = new System.Windows.Forms.Button();
-            this.topLeftButton = new System.Windows.Forms.Button();
-            this.bottomLeftButton = new System.Windows.Forms.Button();
-            this.bottomRightButton = new System.Windows.Forms.Button();
-            this.topRightButton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.paintingTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.cameraTabPage.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,7 +76,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 109);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(915, 354);
+            this.tabControl1.Size = new System.Drawing.Size(1047, 350);
             this.tabControl1.TabIndex = 0;
             // 
             // paintingTabPage
@@ -80,7 +85,7 @@
             this.paintingTabPage.Location = new System.Drawing.Point(4, 22);
             this.paintingTabPage.Name = "paintingTabPage";
             this.paintingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.paintingTabPage.Size = new System.Drawing.Size(907, 328);
+            this.paintingTabPage.Size = new System.Drawing.Size(1039, 324);
             this.paintingTabPage.TabIndex = 0;
             this.paintingTabPage.Text = "Painting";
             this.paintingTabPage.UseVisualStyleBackColor = true;
@@ -90,7 +95,7 @@
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(3, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(901, 322);
+            this.pictureBox1.Size = new System.Drawing.Size(1033, 318);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -167,7 +172,7 @@
             this.modeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(915, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1047, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -203,6 +208,10 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.trackBar2);
             this.panel1.Controls.Add(this.topRightButton);
             this.panel1.Controls.Add(this.bottomRightButton);
             this.panel1.Controls.Add(this.bottomLeftButton);
@@ -216,8 +225,63 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(915, 85);
+            this.panel1.Size = new System.Drawing.Size(1047, 85);
             this.panel1.TabIndex = 2;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(448, 18);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(142, 13);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Like percent treshold (0-100)";
+            // 
+            // trackBar2
+            // 
+            this.trackBar2.Location = new System.Drawing.Point(451, 34);
+            this.trackBar2.Maximum = 100;
+            this.trackBar2.Name = "trackBar2";
+            this.trackBar2.Size = new System.Drawing.Size(156, 45);
+            this.trackBar2.TabIndex = 10;
+            this.trackBar2.Value = 50;
+            this.trackBar2.Scroll += new System.EventHandler(this.UpdateLikePercentTreshold);
+            // 
+            // topRightButton
+            // 
+            this.topRightButton.Location = new System.Drawing.Point(800, 18);
+            this.topRightButton.Name = "topRightButton";
+            this.topRightButton.Size = new System.Drawing.Size(46, 26);
+            this.topRightButton.TabIndex = 9;
+            this.topRightButton.Text = "2";
+            this.topRightButton.UseVisualStyleBackColor = true;
+            // 
+            // bottomRightButton
+            // 
+            this.bottomRightButton.Location = new System.Drawing.Point(800, 45);
+            this.bottomRightButton.Name = "bottomRightButton";
+            this.bottomRightButton.Size = new System.Drawing.Size(46, 26);
+            this.bottomRightButton.TabIndex = 8;
+            this.bottomRightButton.Text = "3";
+            this.bottomRightButton.UseVisualStyleBackColor = true;
+            // 
+            // bottomLeftButton
+            // 
+            this.bottomLeftButton.Location = new System.Drawing.Point(755, 45);
+            this.bottomLeftButton.Name = "bottomLeftButton";
+            this.bottomLeftButton.Size = new System.Drawing.Size(46, 26);
+            this.bottomLeftButton.TabIndex = 7;
+            this.bottomLeftButton.Text = "4";
+            this.bottomLeftButton.UseVisualStyleBackColor = true;
+            // 
+            // topLeftButton
+            // 
+            this.topLeftButton.Location = new System.Drawing.Point(755, 18);
+            this.topLeftButton.Name = "topLeftButton";
+            this.topLeftButton.Size = new System.Drawing.Size(46, 26);
+            this.topLeftButton.TabIndex = 6;
+            this.topLeftButton.Text = "1";
+            this.topLeftButton.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -279,47 +343,28 @@
             this.noSmileButton.UseVisualStyleBackColor = true;
             this.noSmileButton.Click += new System.EventHandler(this.StartNoSmileRecording);
             // 
-            // topLeftButton
+            // label3
             // 
-            this.topLeftButton.Location = new System.Drawing.Point(755, 18);
-            this.topLeftButton.Name = "topLeftButton";
-            this.topLeftButton.Size = new System.Drawing.Size(46, 26);
-            this.topLeftButton.TabIndex = 6;
-            this.topLeftButton.Text = "1";
-            this.topLeftButton.UseVisualStyleBackColor = true;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(863, 18);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(95, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Last review status:";
             // 
-            // bottomLeftButton
+            // label4
             // 
-            this.bottomLeftButton.Location = new System.Drawing.Point(755, 45);
-            this.bottomLeftButton.Name = "bottomLeftButton";
-            this.bottomLeftButton.Size = new System.Drawing.Size(46, 26);
-            this.bottomLeftButton.TabIndex = 7;
-            this.bottomLeftButton.Text = "4";
-            this.bottomLeftButton.UseVisualStyleBackColor = true;
-            // 
-            // bottomRightButton
-            // 
-            this.bottomRightButton.Location = new System.Drawing.Point(800, 45);
-            this.bottomRightButton.Name = "bottomRightButton";
-            this.bottomRightButton.Size = new System.Drawing.Size(46, 26);
-            this.bottomRightButton.TabIndex = 8;
-            this.bottomRightButton.Text = "3";
-            this.bottomRightButton.UseVisualStyleBackColor = true;
-            // 
-            // topRightButton
-            // 
-            this.topRightButton.Location = new System.Drawing.Point(800, 18);
-            this.topRightButton.Name = "topRightButton";
-            this.topRightButton.Size = new System.Drawing.Size(46, 26);
-            this.topRightButton.TabIndex = 9;
-            this.topRightButton.Text = "2";
-            this.topRightButton.UseVisualStyleBackColor = true;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(863, 45);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(0, 13);
+            this.label4.TabIndex = 13;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(915, 463);
+            this.ClientSize = new System.Drawing.Size(1047, 459);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
@@ -335,6 +380,7 @@
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -369,6 +415,10 @@
         private System.Windows.Forms.Button bottomRightButton;
         private System.Windows.Forms.Button bottomLeftButton;
         private System.Windows.Forms.Button topLeftButton;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TrackBar trackBar2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
     }
 }
 

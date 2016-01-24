@@ -103,7 +103,7 @@
                 }
                 else
                 {
-                    this.smileOccurences.Add(true);
+                    this.smileOccurences.Add(false);
                     this.DrawMouth(currentFrame, face, mouth, Color.Red);
                 }
             }
