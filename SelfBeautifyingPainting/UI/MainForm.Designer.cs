@@ -32,6 +32,7 @@
             this.paintingTabPage = new System.Windows.Forms.TabPage();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.cameraTabPage = new System.Windows.Forms.TabPage();
+            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.videoSourcePlayer1 = new AForge.Controls.VideoSourcePlayer();
             this.faceController1 = new Accord.Controls.Vision.FaceController();
             this.faceController2 = new Accord.Controls.Vision.FaceController();
@@ -42,12 +43,17 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
-            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.noSmileButton = new System.Windows.Forms.Button();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.tabControl1.SuspendLayout();
             this.paintingTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.cameraTabPage.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -55,10 +61,10 @@
             this.tabControl1.Controls.Add(this.paintingTabPage);
             this.tabControl1.Controls.Add(this.cameraTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 24);
+            this.tabControl1.Location = new System.Drawing.Point(0, 83);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(284, 237);
+            this.tabControl1.Size = new System.Drawing.Size(446, 442);
             this.tabControl1.TabIndex = 0;
             // 
             // paintingTabPage
@@ -67,7 +73,7 @@
             this.paintingTabPage.Location = new System.Drawing.Point(4, 22);
             this.paintingTabPage.Name = "paintingTabPage";
             this.paintingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.paintingTabPage.Size = new System.Drawing.Size(276, 211);
+            this.paintingTabPage.Size = new System.Drawing.Size(438, 416);
             this.paintingTabPage.TabIndex = 0;
             this.paintingTabPage.Text = "Painting";
             this.paintingTabPage.UseVisualStyleBackColor = true;
@@ -77,7 +83,7 @@
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(3, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(270, 205);
+            this.pictureBox1.Size = new System.Drawing.Size(432, 410);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -90,17 +96,27 @@
             this.cameraTabPage.Location = new System.Drawing.Point(4, 22);
             this.cameraTabPage.Name = "cameraTabPage";
             this.cameraTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.cameraTabPage.Size = new System.Drawing.Size(276, 211);
+            this.cameraTabPage.Size = new System.Drawing.Size(438, 416);
             this.cameraTabPage.TabIndex = 1;
             this.cameraTabPage.Text = "Camera";
             this.cameraTabPage.UseVisualStyleBackColor = true;
+            // 
+            // elementHost1
+            // 
+            this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.elementHost1.Location = new System.Drawing.Point(3, 3);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(432, 410);
+            this.elementHost1.TabIndex = 1;
+            this.elementHost1.Text = "elementHost1";
+            this.elementHost1.Child = null;
             // 
             // videoSourcePlayer1
             // 
             this.videoSourcePlayer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.videoSourcePlayer1.Location = new System.Drawing.Point(3, 3);
             this.videoSourcePlayer1.Name = "videoSourcePlayer1";
-            this.videoSourcePlayer1.Size = new System.Drawing.Size(270, 205);
+            this.videoSourcePlayer1.Size = new System.Drawing.Size(432, 410);
             this.videoSourcePlayer1.TabIndex = 0;
             this.videoSourcePlayer1.Text = "videoSourcePlayer1";
             this.videoSourcePlayer1.VideoSource = null;
@@ -144,7 +160,7 @@
             this.modeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(284, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(446, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -178,27 +194,57 @@
             this.toolStripComboBox1.Size = new System.Drawing.Size(121, 23);
             this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_SelectedIndexChanged);
             // 
-            // elementHost1
+            // panel1
             // 
-            this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.elementHost1.Location = new System.Drawing.Point(3, 3);
-            this.elementHost1.Name = "elementHost1";
-            this.elementHost1.Size = new System.Drawing.Size(270, 205);
-            this.elementHost1.TabIndex = 1;
-            this.elementHost1.Text = "elementHost1";
-            this.elementHost1.Child = null;
+            this.panel1.Controls.Add(this.trackBar1);
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.noSmileButton);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 24);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(446, 59);
+            this.panel1.TabIndex = 2;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(197, 33);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Smile";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.StartSmileRecording);
+            // 
+            // noSmileButton
+            // 
+            this.noSmileButton.Location = new System.Drawing.Point(197, 4);
+            this.noSmileButton.Name = "noSmileButton";
+            this.noSmileButton.Size = new System.Drawing.Size(75, 23);
+            this.noSmileButton.TabIndex = 0;
+            this.noSmileButton.Text = "No smile";
+            this.noSmileButton.UseVisualStyleBackColor = true;
+            this.noSmileButton.Click += new System.EventHandler(this.StartNoSmileRecording);
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(278, 4);
+            this.trackBar1.Maximum = 100;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(156, 45);
+            this.trackBar1.TabIndex = 2;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(446, 525);
             this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "MainForm";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.tabControl1.ResumeLayout(false);
             this.paintingTabPage.ResumeLayout(false);
             this.paintingTabPage.PerformLayout();
@@ -206,6 +252,9 @@
             this.cameraTabPage.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -228,6 +277,10 @@
         private System.Windows.Forms.ToolStripMenuItem modeToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
         private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button noSmileButton;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TrackBar trackBar1;
     }
 }
 

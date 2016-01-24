@@ -145,7 +145,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Detection\SmileDetection.cs" />
     <Compile Include="Google\GoogleRelatedImageFinder.cs" />
     <Compile Include="Helpers\EnglishWordsDictionary.cs" />
     <Compile Include="Google\GoogleTopicsImageFinder.cs" />

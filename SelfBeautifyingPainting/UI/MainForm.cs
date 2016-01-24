@@ -1,56 +1,50 @@
-﻿using System;
-using System.Linq;
-using System.Windows.Forms;
-using AForge.Video.DirectShow;
-using SelfBeautifyingPainting.Painting;
-using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings;
-using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ColorProbabilityMode;
-using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ColorsMarkovMode;
-using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ShapeMode;
-
-namespace SelfBeautifyingPainting.UI
+﻿namespace SelfBeautifyingPainting.UI
 {
-    using SelfBeautifyingPainting.Detection;
+    using System;
+    using System.Linq;
+    using System.Windows.Forms;
+    using System.Windows.Threading;
 
+    using SelfBeautifyingPainting.Painting;
+    using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings;
+    using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ColorProbabilityMode;
+    using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ColorsMarkovMode;
+    using SelfBeautifyingPainting.Painting.SelfBeautifyingPaintings.ShapeMode;
     using WpfFaceDetectionTest;
 
     public partial class MainForm : Form
     {
-        private Painting.SelfBeautifyingPaintings.SelfBeautifyingPainting _selfBeautifyingPainting;
+        #region Syf
+
+        private SelfBeautifyingPainting _selfBeautifyingPainting;
         private PaintingMode mode;
 
-        private SmileDetection smileDetection;
-
         private SmileDetectionControl smileDetectionControl;
+
+        private readonly DispatcherTimer mainTimer =new DispatcherTimer();
+
+        private readonly DispatcherTimer RecordNoSmileTimer = new DispatcherTimer();
+
+        private readonly DispatcherTimer RecordSmileTimer = new DispatcherTimer();
+
+        private readonly DispatcherTimer EndNoSmileTimer = new DispatcherTimer();
+
+        private readonly DispatcherTimer EndSmileTimer = new DispatcherTimer();
 
         private long counter=0;
 
         public MainForm()
         {
-            InitializeComponent();
-            InitModes();
-           // InitFullscreen();
-            //InitVideo();
-            InitPainting();
-
-            //timer1.Start();
-            // videoSourcePlayer1.NewFrame += VideoSourcePlayer1_NewFrame;
+            this.InitializeComponent();
+            this.InitModes();
+            this.InitTimers();
+           
+            //InitFullscreen();
+            //InitPainting();
             smileDetectionControl = new SmileDetectionControl();
             elementHost1.Child = smileDetectionControl;
+            this.trackBar1.Value = 50;
 
-        }
-
-        private void VideoSourcePlayer1_NewFrame(object sender, ref System.Drawing.Bitmap frame)
-        {
-        //    counter++;
-
-          //  if (counter > 10)
-            {
-                smileDetection.Detect(ref frame);
-              //  counter = 0;
-               
-            }
-            //return;
         }
 
         private void InitModes()
@@ -96,8 +90,6 @@ namespace SelfBeautifyingPainting.UI
             pictureBox1.Image = _selfBeautifyingPainting.Painting;
 
             _selfBeautifyingPainting.ImageChanged += (o, e) => pictureBox1.Invalidate();
-
-            smileDetection = new SmileDetection();
         }
 
 
@@ -122,19 +114,6 @@ namespace SelfBeautifyingPainting.UI
             //this.StartPosition = FormStartPosition.CenterScreen;
         }
 
-        private void InitVideo()
-        {
-            var filterInfoCollection = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            
-            var videoSource = new VideoCaptureDevice(filterInfoCollection[0].MonikerString);
-            videoSource.VideoResolution = videoSource.VideoCapabilities[4];
-          //  this.videoSourcePlayer1 = new AForge.Controls.VideoSourcePlayer();
-            videoSourcePlayer1.VideoSource = videoSource;
-            //vide
-            videoSourcePlayer1.Start();
-        }
-
-
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Escape)
@@ -145,15 +124,9 @@ namespace SelfBeautifyingPainting.UI
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            videoSourcePlayer1.Stop();
-        }
-
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            var me = (MouseEventArgs) e;
+            var me = (MouseEventArgs)e;
             var coordinates = me.Location;
 
             _selfBeautifyingPainting.ReviewPainting(coordinates.X, coordinates.Y, me.Button == MouseButtons.Left);
@@ -171,15 +144,92 @@ namespace SelfBeautifyingPainting.UI
         {
             Close();
         }
+        #endregion
 
-        private void timer1_Tick(object sender, EventArgs e)
+        #region CameraActions
+
+        /// <summary>
+        /// The init timers.
+        /// </summary>
+        private void InitTimers()
         {
-        //    var frame = videoSourcePlayer1.GetCurrentVideoFrame();
-            
-            
-           // smileDetection.Detect(frame);
+            this.mainTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            this.mainTimer.Tick += (sender, args) => this.smileDetectionControl.DetectSmile();
+            this.mainTimer.Start();
 
-            //detectionPictureBox.Invalidate();
+            this.RecordNoSmileTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            this.RecordNoSmileTimer.Tick += (s, args) => this.smileDetectionControl.RecordNoSmile();
+
+            this.RecordSmileTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            this.RecordSmileTimer.Tick += (s, args) => this.smileDetectionControl.RecordSmile();
+
+            this.EndSmileTimer.Interval = new TimeSpan(0, 0, 0, 5);
+            this.EndSmileTimer.Tick += (s, args) => this.StopSmileRecording();
+
+            this.EndNoSmileTimer.Interval = new TimeSpan(0, 0, 0, 5);
+            this.EndNoSmileTimer.Tick += (s, args) => this.StopNoSmileRecording();
+        }
+
+        /// <summary>
+        /// The no smile button_ click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void StartNoSmileRecording(object sender, EventArgs e)
+        {
+            this.mainTimer.Stop();
+            this.RecordNoSmileTimer.Start();
+            
+            this.EndNoSmileTimer.Start();
+        }
+
+        /// <summary>
+        /// The start smile recording.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void StartSmileRecording(object sender, EventArgs e)
+        {
+            this.mainTimer.Stop();
+            this.RecordSmileTimer.Start();
+            this.EndSmileTimer.Start();
+        }
+
+        /// <summary>
+        /// The stop no smile recording.
+        /// </summary>
+        private void StopNoSmileRecording()
+        {
+            this.EndNoSmileTimer.Stop();
+            this.RecordNoSmileTimer.Stop();
+            this.smileDetectionControl.SaveNoSmileStatistics();
+            this.mainTimer.Start();
+        }
+
+        /// <summary>
+        /// The stop smile recording.
+        /// </summary>
+        private void StopSmileRecording()
+        {
+            this.EndSmileTimer.Stop();
+            this.RecordSmileTimer.Stop();
+            this.smileDetectionControl.SaveSmileStatistics();
+            this.mainTimer.Start();
+        }
+
+        #endregion
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            this.smileDetectionControl.UpdateTreshold(trackBar1.Value);
         }
     }
 }
