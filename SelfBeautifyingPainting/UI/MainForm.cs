@@ -55,6 +55,7 @@
             smileDetectionControl = new SmileDetectionControl();
             elementHost1.Child = smileDetectionControl;
             this.trackBar1.Value = 50;
+            this.Resize += (s, e) => InitPainting();
         }
 
         /// <summary>
