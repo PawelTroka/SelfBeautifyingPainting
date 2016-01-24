@@ -124,6 +124,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Cascades\haarcascade_frontalface_default.xml" />
+    <Content Include="Cascades\haarcascade_smile.xml" />
     <Content Include="cublas32_55.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
