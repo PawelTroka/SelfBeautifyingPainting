@@ -50,7 +50,7 @@
             this.InitButtons();
 
             //InitFullscreen();
-
+            
             InitPainting();
             smileDetectionControl = new SmileDetectionControl();
             elementHost1.Child = smileDetectionControl;
@@ -94,34 +94,33 @@
             switch (mode)
             {
                 case PaintingMode.GoogleTopicsImages:
-                    _selfBeautifyingPainting = new GoogleTopicsSelfBeautifyingPainting(workingArea.Width,
-                        workingArea.Height);
+                    _selfBeautifyingPainting = new GoogleTopicsSelfBeautifyingPainting(pictureBox1.Width,
+                        pictureBox1.Height);
                     break;
                 case PaintingMode.ColorsWithProbability:
-                    _selfBeautifyingPainting = new ColorsWithProbabilitySelfBeautifyingPainting(workingArea.Width,
-                        workingArea.Height);
+                    _selfBeautifyingPainting = new ColorsWithProbabilitySelfBeautifyingPainting(pictureBox1.Width,
+                        pictureBox1.Height);
                     break;
                 case PaintingMode.ColorsWithMarkovModel:
-                    _selfBeautifyingPainting = new ColorsMarkovModelSelfBeautifyingPainting(workingArea.Width,
-                        workingArea.Height);
+                    _selfBeautifyingPainting = new ColorsMarkovModelSelfBeautifyingPainting(pictureBox1.Width,
+                        pictureBox1.Height);
                     break;
                 case PaintingMode.Shapes:
-                    _selfBeautifyingPainting = new ShapeSelfBeautifyingPainting(workingArea.Width,
-                        workingArea.Height);
+                    _selfBeautifyingPainting = new ShapeSelfBeautifyingPainting(pictureBox1.Width,
+                        pictureBox1.Height);
                     break;
 
                 case PaintingMode.Colors:
                 case PaintingMode.GoogleImagesRelated:
-
-
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    MessageBox.Show("Mode is not supported yet");
+                    return;
             }
 
 
             pictureBox1.Image = _selfBeautifyingPainting.Painting;
-
             _selfBeautifyingPainting.ImageChanged += (o, e) => pictureBox1.Invalidate();
+
         }
 
 
