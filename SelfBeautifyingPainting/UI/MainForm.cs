@@ -21,7 +21,7 @@
 
         private SmileDetectionControl smileDetectionControl;
 
-        private readonly DispatcherTimer mainTimer =new DispatcherTimer();
+        private readonly DispatcherTimer ProcessFrameTimer =new DispatcherTimer();
 
         private readonly DispatcherTimer RecordNoSmileTimer = new DispatcherTimer();
 
@@ -153,9 +153,9 @@
         /// </summary>
         private void InitTimers()
         {
-            this.mainTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            this.mainTimer.Tick += (sender, args) => this.smileDetectionControl.DetectSmile();
-            this.mainTimer.Start();
+            this.ProcessFrameTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            this.ProcessFrameTimer.Tick += (sender, args) => this.smileDetectionControl.DetectSmile();
+            this.ProcessFrameTimer.Start();
 
             this.RecordNoSmileTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             this.RecordNoSmileTimer.Tick += (s, args) => this.smileDetectionControl.RecordNoSmile();
@@ -181,7 +181,7 @@
         /// </param>
         private void StartNoSmileRecording(object sender, EventArgs e)
         {
-            this.mainTimer.Stop();
+            this.ProcessFrameTimer.Stop();
             this.RecordNoSmileTimer.Start();
             
             this.EndNoSmileTimer.Start();
@@ -198,7 +198,7 @@
         /// </param>
         private void StartSmileRecording(object sender, EventArgs e)
         {
-            this.mainTimer.Stop();
+            this.ProcessFrameTimer.Stop();
             this.RecordSmileTimer.Start();
             this.EndSmileTimer.Start();
         }
@@ -211,7 +211,7 @@
             this.EndNoSmileTimer.Stop();
             this.RecordNoSmileTimer.Stop();
             this.smileDetectionControl.SaveNoSmileStatistics();
-            this.mainTimer.Start();
+            this.ProcessFrameTimer.Start();
         }
 
         /// <summary>
@@ -222,14 +222,42 @@
             this.EndSmileTimer.Stop();
             this.RecordSmileTimer.Stop();
             this.smileDetectionControl.SaveSmileStatistics();
-            this.mainTimer.Start();
+            this.ProcessFrameTimer.Start();
         }
 
         #endregion
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            this.smileDetectionControl.UpdateTreshold(trackBar1.Value);
+            this.smileDetectionControl.UpdateTreshold(this.trackBar1.Value);
+        }
+
+        /// <summary>
+        /// The stop slef beutifying painting.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void StopPaint(object sender, EventArgs e)
+        {
+            this.ProcessFrameTimer.Stop();
+        }
+
+        /// <summary>
+        /// The start paint.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void StartPaint(object sender, EventArgs e)
+        {
+            this.ProcessFrameTimer.Start();
         }
     }
 }
