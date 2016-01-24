@@ -44,12 +44,16 @@
             this.modeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.button1 = new System.Windows.Forms.Button();
             this.noSmileButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.topLeftButton = new System.Windows.Forms.Button();
+            this.bottomLeftButton = new System.Windows.Forms.Button();
+            this.bottomRightButton = new System.Windows.Forms.Button();
+            this.topRightButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.paintingTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -99,7 +103,7 @@
             this.cameraTabPage.Location = new System.Drawing.Point(4, 22);
             this.cameraTabPage.Name = "cameraTabPage";
             this.cameraTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.cameraTabPage.Size = new System.Drawing.Size(907, 347);
+            this.cameraTabPage.Size = new System.Drawing.Size(907, 328);
             this.cameraTabPage.TabIndex = 1;
             this.cameraTabPage.Text = "Camera";
             this.cameraTabPage.UseVisualStyleBackColor = true;
@@ -109,7 +113,7 @@
             this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.elementHost1.Location = new System.Drawing.Point(3, 3);
             this.elementHost1.Name = "elementHost1";
-            this.elementHost1.Size = new System.Drawing.Size(901, 341);
+            this.elementHost1.Size = new System.Drawing.Size(901, 322);
             this.elementHost1.TabIndex = 1;
             this.elementHost1.Text = "elementHost1";
             this.elementHost1.Child = null;
@@ -119,7 +123,7 @@
             this.videoSourcePlayer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.videoSourcePlayer1.Location = new System.Drawing.Point(3, 3);
             this.videoSourcePlayer1.Name = "videoSourcePlayer1";
-            this.videoSourcePlayer1.Size = new System.Drawing.Size(901, 341);
+            this.videoSourcePlayer1.Size = new System.Drawing.Size(901, 322);
             this.videoSourcePlayer1.TabIndex = 0;
             this.videoSourcePlayer1.Text = "videoSourcePlayer1";
             this.videoSourcePlayer1.VideoSource = null;
@@ -199,6 +203,10 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.topRightButton);
+            this.panel1.Controls.Add(this.bottomRightButton);
+            this.panel1.Controls.Add(this.bottomLeftButton);
+            this.panel1.Controls.Add(this.topLeftButton);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.button2);
@@ -210,6 +218,15 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(915, 85);
             this.panel1.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(265, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(163, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Smile detection sensitivity (0-100)";
             // 
             // button3
             // 
@@ -239,7 +256,7 @@
             this.trackBar1.Size = new System.Drawing.Size(156, 45);
             this.trackBar1.TabIndex = 2;
             this.trackBar1.Value = 50;
-            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            this.trackBar1.Scroll += new System.EventHandler(this.ChangeSmileDetectionSensitivity);
             // 
             // button1
             // 
@@ -262,14 +279,41 @@
             this.noSmileButton.UseVisualStyleBackColor = true;
             this.noSmileButton.Click += new System.EventHandler(this.StartNoSmileRecording);
             // 
-            // label1
+            // topLeftButton
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(265, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(163, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Smile detection sensitivity (0-100)";
+            this.topLeftButton.Location = new System.Drawing.Point(755, 18);
+            this.topLeftButton.Name = "topLeftButton";
+            this.topLeftButton.Size = new System.Drawing.Size(46, 26);
+            this.topLeftButton.TabIndex = 6;
+            this.topLeftButton.Text = "1";
+            this.topLeftButton.UseVisualStyleBackColor = true;
+            // 
+            // bottomLeftButton
+            // 
+            this.bottomLeftButton.Location = new System.Drawing.Point(755, 45);
+            this.bottomLeftButton.Name = "bottomLeftButton";
+            this.bottomLeftButton.Size = new System.Drawing.Size(46, 26);
+            this.bottomLeftButton.TabIndex = 7;
+            this.bottomLeftButton.Text = "4";
+            this.bottomLeftButton.UseVisualStyleBackColor = true;
+            // 
+            // bottomRightButton
+            // 
+            this.bottomRightButton.Location = new System.Drawing.Point(800, 45);
+            this.bottomRightButton.Name = "bottomRightButton";
+            this.bottomRightButton.Size = new System.Drawing.Size(46, 26);
+            this.bottomRightButton.TabIndex = 8;
+            this.bottomRightButton.Text = "3";
+            this.bottomRightButton.UseVisualStyleBackColor = true;
+            // 
+            // topRightButton
+            // 
+            this.topRightButton.Location = new System.Drawing.Point(800, 18);
+            this.topRightButton.Name = "topRightButton";
+            this.topRightButton.Size = new System.Drawing.Size(46, 26);
+            this.topRightButton.TabIndex = 9;
+            this.topRightButton.Text = "2";
+            this.topRightButton.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -321,6 +365,10 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button topRightButton;
+        private System.Windows.Forms.Button bottomRightButton;
+        private System.Windows.Forms.Button bottomLeftButton;
+        private System.Windows.Forms.Button topLeftButton;
     }
 }
 

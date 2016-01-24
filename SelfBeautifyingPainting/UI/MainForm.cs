@@ -1,6 +1,7 @@
 ﻿namespace SelfBeautifyingPainting.UI
 {
     using System;
+    using System.Drawing;
     using System.Linq;
     using System.Windows.Forms;
     using System.Windows.Threading;
@@ -31,6 +32,10 @@
 
         private readonly DispatcherTimer EndSmileTimer = new DispatcherTimer();
 
+        private readonly DispatcherTimer ReviewPaintTimer = new DispatcherTimer();
+
+        private int paintingPartNumber = 0;
+
         private long counter=0;
 
         public MainForm()
@@ -38,14 +43,19 @@
             this.InitializeComponent();
             this.InitModes();
             this.InitTimers();
-           
+            this.InitButtons();
+
+
             //InitFullscreen();
-            //InitPainting();
+
+            InitPainting();
             smileDetectionControl = new SmileDetectionControl();
             elementHost1.Child = smileDetectionControl;
             this.trackBar1.Value = 50;
 
         }
+
+        
 
         private void InitModes()
         {
@@ -168,6 +178,9 @@
 
             this.EndNoSmileTimer.Interval = new TimeSpan(0, 0, 0, 5);
             this.EndNoSmileTimer.Tick += (s, args) => this.StopNoSmileRecording();
+
+            this.ReviewPaintTimer.Interval = new TimeSpan(0, 0, 0, 5);
+            this.ReviewPaintTimer.Tick += (s, args) => this.EndReviewingOnePart();
         }
 
         /// <summary>
@@ -227,7 +240,16 @@
 
         #endregion
 
-        private void trackBar1_Scroll(object sender, EventArgs e)
+        /// <summary>
+        /// The track bar 1_ scroll.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void ChangeSmileDetectionSensitivity(object sender, EventArgs e)
         {
             this.smileDetectionControl.UpdateTreshold(this.trackBar1.Value);
         }
@@ -257,7 +279,67 @@
         /// </param>
         private void StartPaint(object sender, EventArgs e)
         {
+            this.InitPainting();
+            this.smileDetectionControl.ClearReviewResults();
             this.ProcessFrameTimer.Start();
+            this.ReviewPaintTimer.Start();
+        }
+
+        /// <summary>
+        /// The init buttons.
+        /// </summary>
+        private void InitButtons()
+        {
+            this.topLeftButton.BackColor = Color.Crimson;
+            this.topRightButton.BackColor = Color.AliceBlue;
+            this.bottomLeftButton.BackColor = Color.AliceBlue;
+            this.bottomRightButton.BackColor = Color.AliceBlue;
+        }
+        
+        /// <summary>
+        /// The end reviewing one part.
+        /// </summary>
+        private void EndReviewingOnePart()
+        {
+            this.ProcessFrameTimer.Stop();
+            this.ReviewPaintTimer.Stop();
+            var percent = this.smileDetectionControl.GetLikeResult();
+            this.smileDetectionControl.ClearReviewResults();
+
+            if (percent * 100 > 50)
+            {
+                this._selfBeautifyingPainting.ReviewPainting((PaintingFragment)this.paintingPartNumber, false);
+            }
+            else
+            {
+                this._selfBeautifyingPainting.ReviewPainting((PaintingFragment)this.paintingPartNumber, false);
+            }
+
+            switch (this.paintingPartNumber)
+            {
+                case 0:
+                    this.topLeftButton.BackColor = Color.AliceBlue;
+                    this.topRightButton.BackColor = Color.Crimson;
+                    break;
+                case 1:
+                    this.topRightButton.BackColor = Color.AliceBlue;
+                    this.bottomRightButton.BackColor = Color.Crimson;
+                    break;
+                case 2:
+                    this.bottomRightButton.BackColor = Color.AliceBlue;
+                    this.bottomLeftButton.BackColor = Color.Crimson;
+                    break;
+                case 3:
+                    this.bottomLeftButton.BackColor = Color.AliceBlue;
+                    this.topLeftButton.BackColor = Color.Crimson;
+                    break;
+            }
+
+            this.paintingPartNumber++;
+            this.paintingPartNumber %= 4;
+
+            this.ProcessFrameTimer.Start();
+            this.ReviewPaintTimer.Start();
         }
     }
 }

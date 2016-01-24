@@ -1,8 +1,10 @@
 ﻿namespace WpfFaceDetectionTest
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Drawing;
+    using System.Linq;
     using System.Runtime.InteropServices;
     using System.Windows;
     using System.Windows.Media.Imaging;
@@ -38,6 +40,11 @@
         /// The statistics.
         /// </summary>
         private DetectionStatistics statistics = new DetectionStatistics();
+
+        /// <summary>
+        /// The smile occurences.
+        /// </summary>
+        private List<bool> smileOccurences = new List<bool>();
 
         #endregion
 
@@ -91,10 +98,12 @@
                 if (((double)(mouth.rect.Height * mouth.rect.Width) / (face.rect.Height * face.rect.Width))
                     > this.statistics.Treshold)
                 {
+                    this.smileOccurences.Add(true);
                     this.DrawMouth(currentFrame, face, mouth, Color.Green);
                 }
                 else
                 {
+                    this.smileOccurences.Add(true);
                     this.DrawMouth(currentFrame, face, mouth, Color.Red);
                 }
             }
@@ -179,6 +188,26 @@
         public void UpdateTreshold(int value)
         {
             this.statistics.ThresholdPercent = value;
+        }
+
+        /// <summary>
+        /// The get like result.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="double"/>.
+        /// </returns>
+        public double GetLikeResult()
+        {
+            var likes = this.smileOccurences.Count(x => x);
+            return (double)likes / this.smileOccurences.Count;
+        }
+
+        /// <summary>
+        /// The clear review results.
+        /// </summary>
+        public void ClearReviewResults()
+        {
+            this.smileOccurences = new List<bool>();
         }
 
         [DllImport("gdi32")]
