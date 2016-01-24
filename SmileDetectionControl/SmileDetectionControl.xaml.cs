@@ -176,7 +176,7 @@ namespace WpfFaceDetectionTest
                 var mouth = this.GetMouth(currentFrame, face);
                 this.DrawMouth(currentFrame, face, mouth, Color.Yellow);
 
-                this.statistics.noSmileStates.Add((double)(mouth.rect.Height * mouth.rect.Width) / (face.rect.Height * face.rect.Width));
+                this.statistics.NoSmileStates.Add((double)(mouth.rect.Height * mouth.rect.Width) / (face.rect.Height * face.rect.Width));
                 this.image1.Source = ToBitmapSource(currentFrame);
             }
             catch (Exception ex)
@@ -196,7 +196,7 @@ namespace WpfFaceDetectionTest
                 var mouth = this.GetMouth(currentFrame, face);
                 this.DrawMouth(currentFrame, face, mouth, Color.Yellow);
 
-                this.statistics.smileStates.Add((double)(mouth.rect.Height * mouth.rect.Width) / (face.rect.Height * face.rect.Width));
+                this.statistics.SmileStates.Add((double)(mouth.rect.Height * mouth.rect.Width) / (face.rect.Height * face.rect.Width));
                 this.image1.Source = ToBitmapSource(currentFrame);
             }
             catch (Exception ex)
@@ -217,7 +217,7 @@ namespace WpfFaceDetectionTest
 
         public void UpdateTreshold(int value)
         {
-            this.statistics.tresholdPercent = value;
+            this.statistics.ThresholdPercent = value;
         }
     }
 }
